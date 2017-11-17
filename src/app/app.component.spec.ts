@@ -2,6 +2,7 @@ import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { EsriLoaderService } from 'angular2-esri-loader';
+import { MaterialModule } from '@angular/material';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -10,7 +11,7 @@ describe('AppComponent', () => {
         AppComponent
       ],
       imports: [],
-      providers: [EsriLoaderService],
+      providers: [EsriLoaderService, MaterialModule],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
   }));
