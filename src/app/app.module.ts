@@ -6,12 +6,14 @@ import { AppComponent } from './app.component';
 import { EsriLoaderService } from 'angular2-esri-loader';
 import { EsriMapComponent } from './esri-map/esri-map.component';
 import { HeaderComponent } from './header/header.component';
+import { AoiComponent } from './aoi/aoi.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     EsriMapComponent,
-    HeaderComponent
+    HeaderComponent,
+    AoiComponent
   ],
   imports: [
     BrowserModule,
