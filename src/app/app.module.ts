@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { MatToolbarModule } from '@angular/material';
-
+import { MatToolbarModule, MatButton, MatButtonModule, MatCardModule } from '@angular/material';
+// import { MatButton } from '@angular/material/button';
 import { AppComponent } from './app.component';
 import { EsriLoaderService } from 'angular2-esri-loader';
 import { EsriMapComponent } from './esri-map/esri-map.component';
@@ -17,7 +17,9 @@ import { AoiComponent } from './aoi/aoi.component';
   ],
   imports: [
     BrowserModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatButtonModule,
+    MatCardModule
   ],
   providers: [EsriLoaderService],
   bootstrap: [AppComponent]
