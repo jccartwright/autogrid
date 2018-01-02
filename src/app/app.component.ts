@@ -34,4 +34,9 @@ export class AppComponent {
   resetDraw(event) {
     this.mapComponent.resetDraw();
   }
+
+  setAoiOnMapHandler(bbox) {
+    this.mapComponent.repositionMap(bbox);
+    //console.log('inside setAoiOnMapHandler with ',bbox);
+  }
 }

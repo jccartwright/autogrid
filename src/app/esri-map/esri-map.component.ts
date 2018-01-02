@@ -45,6 +45,27 @@ export class EsriMapComponent implements OnInit {
     if (this._drawHandle) { this._drawHandle.remove(); }
   }
 
+  repositionMap(bbox) {
+    this.resetDraw();
+    let extent = new this.Extent({
+      xmin: bbox.minx,
+      ymin: bbox.miny,
+      xmax: bbox.maxx,
+      ymax: bbox.maxy,
+      spatialReference: {
+        wkid: 4326
+      }});
+
+    this.extentGraphic = new this.Graphic({
+      geometry: extent,
+      symbol: this.fillSymbol
+    });
+    this.mapView.graphics.add(this.extentGraphic)
+
+    //TODO need to zoom out by 1 level
+    this.mapView.goTo(extent);
+  }
+
   private _setFillSymbol() {
     // Create a symbol for rendering the graphic
     this.fillSymbol = {
@@ -80,8 +101,6 @@ export class EsriMapComponent implements OnInit {
 
   private _setDrawHandler() {
     //Thanks to Thomas Solow (https://community.esri.com/thread/203242-draw-a-rectangle-in-jsapi-4x)
-    this._setFillSymbol();
-    
     let extentGraphic = null;
     let origin = null;
 
@@ -145,6 +164,7 @@ export class EsriMapComponent implements OnInit {
         this.webMercatorUtils = webMercatorUtils;
         this.Map = Map;
         this.MapView = MapView;
+        this._setFillSymbol();
 
         this._constructMap();
         

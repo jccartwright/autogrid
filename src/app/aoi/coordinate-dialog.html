@@ -1,0 +1,27 @@
+<h1 mat-dialog-title>Enter Coordinates for Area of Interest</h1>
+<div mat-dialog-content>
+    <p>West:
+        <mat-form-field>
+            <input matInput tabindex="1" [(ngModel)]="data.minx" required>
+        </mat-form-field>
+    </p>
+    <p>South:
+        <mat-form-field>
+            <input matInput tabindex="2" [(ngModel)]="data.miny" required>
+        </mat-form-field>
+    </p>
+    <p>East:
+        <mat-form-field>
+            <input matInput tabindex="3" [(ngModel)]="data.maxx" required>
+        </mat-form-field>
+    </p>
+    <p>North:
+        <mat-form-field>
+            <input matInput tabindex="4" [(ngModel)]="data.maxy" required>
+        </mat-form-field>
+    </p>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Cancel</button>
+    <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Ok</button>
+</div>
