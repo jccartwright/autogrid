@@ -3,3 +3,5 @@
 <app-esri-map (aoi)="aoiHandler($event)" (drawingActive)="drawingActiveHandler($event)"></app-esri-map>
 
 <app-aoi [aoi]="aoi"  (setAoiOnMap)="setAoiOnMapHandler($event)" (activateDraw)="activateDrawHandler()" (resetDraw)="resetDraw()" [drawingActive]="drawingActive"></app-aoi>
+
+<app-options></app-options>

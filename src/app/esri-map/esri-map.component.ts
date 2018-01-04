@@ -16,6 +16,7 @@ export class EsriMapComponent implements OnInit {
   public mapView: any;
   public fillSymbol: any;
   public extentGraphic: any;
+
   private _drawHandle;
 
   //TODO bit of a hack but didn't know a better way to expose the JSAPI classes
@@ -31,6 +32,7 @@ export class EsriMapComponent implements OnInit {
 
   constructor( private esriLoader: EsriLoaderService) { }
 
+
   activateDraw() {
     this.drawingActive.emit(true);
     if (this.extentGraphic) {
@@ -39,11 +41,13 @@ export class EsriMapComponent implements OnInit {
     this._drawHandle = this._setDrawHandler();
   }
 
+
   resetDraw() {
     if (this.extentGraphic) this.mapView.graphics.remove(this.extentGraphic)
     this.drawingActive.emit(false);
     if (this._drawHandle) { this._drawHandle.remove(); }
   }
+
 
   repositionMap(bbox) {
     this.resetDraw();
@@ -164,6 +168,7 @@ export class EsriMapComponent implements OnInit {
         this.webMercatorUtils = webMercatorUtils;
         this.Map = Map;
         this.MapView = MapView;
+        
         this._setFillSymbol();
 
         this._constructMap();
