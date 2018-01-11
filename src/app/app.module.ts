@@ -15,7 +15,6 @@ import {
 } from '@angular/material';
 // import { MatButton } from '@angular/material/button';
 import { AppComponent } from './app.component';
-import { EsriLoaderService } from 'angular2-esri-loader';
 import { EsriMapComponent } from './esri-map/esri-map.component';
 import { HeaderComponent } from './header/header.component';
 import { AoiComponent, CoordinateDialog } from './aoi/aoi.component';
@@ -44,7 +43,7 @@ import { OptionsComponent } from './options/options.component';
     MatInputModule
   ],
   entryComponents: [ CoordinateDialog ],
-  providers: [EsriLoaderService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
