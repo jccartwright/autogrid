@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, EventEmitter, Output } from '
 
 // also import "esri-loader" methods to be able to load JSAPI modules
 // loadScript is optional if always using the latest JSAPI 4.x version
-import { loadScript, loadModules } from 'esri-loader';
+import { loadModules } from 'esri-loader';
 
 @Component({
   selector: 'app-esri-map',
@@ -145,16 +145,15 @@ export class EsriMapComponent implements OnInit {
   //TODO any concern w/ putting all logic w/in the init lifecycle handler?
   public ngOnInit() {
     // only load the ArcGIS API for JavaScript when this component is loaded
-    return loadScript({
+    return loadModules([
+      'esri/Map',
+      'esri/views/MapView',
+      'esri/Graphic',
+      'esri/geometry/Extent',
+      "esri/geometry/support/webMercatorUtils"
+    ], {
       url: 'https://js.arcgis.com/4.6/'
-    }).then(() => {
-      loadModules([
-        'esri/Map',
-        'esri/views/MapView',
-        'esri/Graphic',
-        'esri/geometry/Extent',
-        "esri/geometry/support/webMercatorUtils"
-      ]).then(([
+    }).then(([
         Map,
         MapView,
         Graphic,
@@ -172,7 +171,6 @@ export class EsriMapComponent implements OnInit {
         this._constructMap();
         
       });
-    });
   }
 
 }
