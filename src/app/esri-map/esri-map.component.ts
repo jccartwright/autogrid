@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef, EventEmitter, Output } from '@angular/core';
 
-// also import the "angular2-esri-loader" to be able to load JSAPI modules
-import { EsriLoaderService } from 'angular2-esri-loader';
+// also import "esri-loader" methods to be able to load JSAPI modules
+// loadScript is optional if always using the latest JSAPI 4.x version
+import { loadScript, loadModules } from 'esri-loader';
 
 @Component({
   selector: 'app-esri-map',
@@ -28,9 +29,6 @@ export class EsriMapComponent implements OnInit {
 
   // this is needed to be able to create the MapView at the DOM element in this component
   @ViewChild('mapViewNode') private mapViewEl: ElementRef;
-
-
-  constructor( private esriLoader: EsriLoaderService) { }
 
 
   activateDraw() {
@@ -147,10 +145,10 @@ export class EsriMapComponent implements OnInit {
   //TODO any concern w/ putting all logic w/in the init lifecycle handler?
   public ngOnInit() {
     // only load the ArcGIS API for JavaScript when this component is loaded
-    return this.esriLoader.load({
-      url: 'https://js.arcgis.com/4.5/'
+    return loadScript({
+      url: 'https://js.arcgis.com/4.6/'
     }).then(() => {
-      this.esriLoader.loadModules([
+      loadModules([
         'esri/Map',
         'esri/views/MapView',
         'esri/Graphic',
