@@ -14,7 +14,7 @@ export class EsriMapComponent implements OnInit {
   @Output() drawingActive: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   // for JSAPI 4.x you can use the 'any' for TS types
-  public mapView: any;
+  public mapView: __esri.MapView;
   public fillSymbol: any;
   public extentGraphic: any;
 
