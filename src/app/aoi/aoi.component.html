@@ -1,4 +1,6 @@
-Area of Interest: <input size="30" type="text" readonly value="{{aoi}}"/>
-<button mat-raised-button (click)="buttonClickHandler()" [disabled]="drawingActive">Draw Rectangle</button>
-<button mat-raised-button (click)="openDialog()" >Enter Coordinates</button>
-<button mat-raised-button (click)="buttonResetHandler()" >Reset</button>
+<div id="aoiPanel">
+Area of Interest: <input id="aoiInput" size="30" type="text" readonly value="{{aoi}}" matTooltip="specify coordinates using buttons on the right"/>
+<button mat-raised-button (click)="buttonClickHandler()" [disabled]="drawingActive" matTooltip="draw an area on the map">Draw Rectangle</button>
+<button mat-raised-button (click)="openDialog()" matTooltip="enter the geographic coordinates">Enter Coordinates</button>
+<button mat-raised-button (click)="buttonResetHandler()" matTooltip="reset the coordinates and clear the map">Reset</button>
+</div>

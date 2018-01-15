@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { 
   MatToolbarModule, 
@@ -11,7 +11,9 @@ import {
   MatExpansionModule, 
   MatCheckboxModule,   
   MatSelectModule,
-  MatInputModule
+  MatInputModule,
+  MatTooltipModule,
+  MatGridListModule
 } from '@angular/material';
 // import { MatButton } from '@angular/material/button';
 import { AppComponent } from './app.component';
@@ -40,7 +42,10 @@ import { OptionsComponent } from './options/options.component';
     MatExpansionModule,
     MatCheckboxModule,
     MatSelectModule,
-    MatInputModule
+    MatInputModule,
+    MatTooltipModule,
+    MatGridListModule,
+    ReactiveFormsModule
   ],
   entryComponents: [ CoordinateDialog ],
   providers: [],

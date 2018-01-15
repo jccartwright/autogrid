@@ -1,0 +1,12 @@
+#optionsPanel {
+    width:300px;
+    padding: 10px;
+}
+
+#optionsPanel .mat-form-field {
+    padding-bottom: 5px;
+}
+
+#backgroundFillCheckbox {
+    padding-top: 10px;
+}

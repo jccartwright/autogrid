@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-options',
@@ -7,13 +6,20 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./options.component.css']
 })
 export class OptionsComponent implements OnInit {
-  colorTableControl = new FormControl();
-  
+  formData = {
+    "cellSize": null,
+    "backgroundFill": false,
+    "mapTitle": "AutoGrid Map",
+    "colorTable": "rainbow"
+
+  }
+
   colorTables = [
     {value: 'rainbow', viewValue: 'GMT_rainbow.png'},
     {value: 'sealand', viewValue: 'GMT_sealand.png'},
     {value: 'gebco', viewValue: 'GMT_gebco.png'}
   ];
+
   constructor() { }
 
   ngOnInit() {

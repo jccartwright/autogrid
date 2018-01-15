@@ -15,17 +15,17 @@ export class EsriMapComponent implements OnInit {
 
   // for JSAPI 4.x you can use the 'any' for TS types
   public mapView: __esri.MapView;
-  public fillSymbol: any;
-  public extentGraphic: any;
+  public fillSymbol: any //autocast not allow type of __esri.FillSymbol?
+  public extentGraphic: __esri.Graphic;
 
   private _drawHandle;
 
   //TODO bit of a hack but didn't know a better way to expose the JSAPI classes
-  private Graphic: any;
-  private Extent: any;
-  private webMercatorUtils: any;
-  private Map: any;
-  private MapView: any;
+  private Graphic;
+  private Extent;
+  private webMercatorUtils;
+  private Map;
+  private MapView;
 
   // this is needed to be able to create the MapView at the DOM element in this component
   @ViewChild('mapViewNode') private mapViewEl: ElementRef;
@@ -83,7 +83,7 @@ export class EsriMapComponent implements OnInit {
 
   private _constructMap() {
     const mapProperties: any = {
-      basemap: 'hybrid'
+      basemap: 'oceans'
     };
 
     const map: any = new this.Map(mapProperties);
