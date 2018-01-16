@@ -3,6 +3,7 @@ import { FormControl, Validators } from '@angular/forms';
 import { EsriMapComponent } from './esri-map/esri-map.component';
 import { OptionsComponent } from './options/options.component';
 import { AoiComponent } from './aoi/aoi.component';
+import { HeaderComponent } from './header/header.component';
 
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
@@ -16,6 +17,7 @@ const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA
  */
 export class AppComponent {
   title = 'AutoGrid';
+  version = "0.0.1";
   aoi;
   drawingActive = false;
   email: string;
@@ -27,6 +29,8 @@ export class AppComponent {
   @ViewChild(EsriMapComponent) mapComponent: EsriMapComponent;
   @ViewChild(OptionsComponent) optionsComponent: OptionsComponent;
   @ViewChild(AoiComponent) aoiComponent: AoiComponent;
+  @ViewChild(HeaderComponent) headerComponent: HeaderComponent;
+
 
   drawingActiveHandler(event) {
     this.drawingActive = event;
@@ -57,5 +61,10 @@ export class AppComponent {
     formData["bbox"] = this.aoiComponent.aoi;
     formData["email"] = this.emailFormControl.value;
     console.log(formData);
+  }
+
+  //don't know why this is required and injection is not working
+  public ngAfterViewInit() {
+    this.headerComponent.version = this.version;
   }
 }

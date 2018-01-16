@@ -13,12 +13,14 @@ import {
   MatSelectModule,
   MatInputModule,
   MatTooltipModule,
-  MatGridListModule
+  MatGridListModule,
+  MatMenuModule,
+  MatIconModule
 } from '@angular/material';
 // import { MatButton } from '@angular/material/button';
 import { AppComponent } from './app.component';
 import { EsriMapComponent } from './esri-map/esri-map.component';
-import { HeaderComponent } from './header/header.component';
+import { HeaderComponent, InfoDialog } from './header/header.component';
 import { AoiComponent, CoordinateDialog } from './aoi/aoi.component';
 import { OptionsComponent } from './options/options.component';
 
@@ -29,6 +31,7 @@ import { OptionsComponent } from './options/options.component';
     HeaderComponent,
     AoiComponent,
     CoordinateDialog,
+    InfoDialog,
     OptionsComponent
   ],
   imports: [
@@ -45,9 +48,11 @@ import { OptionsComponent } from './options/options.component';
     MatInputModule,
     MatTooltipModule,
     MatGridListModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatMenuModule,
+    MatIconModule
   ],
-  entryComponents: [ CoordinateDialog ],
+  entryComponents: [ CoordinateDialog, InfoDialog ],
   providers: [],
   bootstrap: [AppComponent]
 })

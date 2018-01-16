@@ -1,3 +1,12 @@
-<mat-toolbar color="primary">
-  <span id="title">{{ title }}</span>
+<mat-toolbar color="primary">  
+  <button mat-icon-button [matMenuTriggerFor]="menu">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="openDialog()">About AutoGrid</button>
+  </mat-menu>
+
+  <span id="title" style="padding-left:10px;">{{ title }}</span>
+  <span style="flex: 1 1 auto;"></span>
+  <span id="subtitle" style="font-size: small;">NOAA's National Centers for Environmental Information</span>
 </mat-toolbar>
