@@ -15,12 +15,12 @@ export class EsriMapComponent implements OnInit {
 
   // for JSAPI 4.x you can use the 'any' for TS types
   public mapView: __esri.MapView;
-  public fillSymbol: any //autocast not allow type of __esri.FillSymbol?
+  public fillSymbol: any; //autocast not allow type of __esri.FillSymbol?
   public extentGraphic: __esri.Graphic;
 
   private _drawHandle;
 
-  //TODO bit of a hack but didn't know a better way to expose the JSAPI classes
+  //make the loaded JSAPI classes available to all methods
   private Graphic;
   private Extent;
   private webMercatorUtils;
@@ -49,7 +49,7 @@ export class EsriMapComponent implements OnInit {
 
   repositionMap(bbox) {
     this.resetDraw();
-    let extent = new this.Extent({
+    let extent: __esri.Extent = new this.Extent({
       xmin: bbox.minx,
       ymin: bbox.miny,
       xmax: bbox.maxx,
@@ -82,40 +82,34 @@ export class EsriMapComponent implements OnInit {
 
 
   private _constructMap() {
-    const mapProperties: any = {
+    const map: __esri.Map = new this.Map({
       basemap: 'oceans'
-    };
+    });
 
-    const map: any = new this.Map(mapProperties);
-
-    const mapViewProperties: any = {
+    this.mapView = new this.MapView({
       // create the map view at the DOM element in this component
       container: this.mapViewEl.nativeElement,
-      // supply additional options
-      center: [-12.287, -37.114],
-      zoom: 12,
+      center: [0, 0],
+      zoom: 2,
       map // property shorthand for object literal
-    };
-
-    this.mapView = new this.MapView(mapViewProperties);
+    });
   }
 
 
   private _setDrawHandler() {
     //Thanks to Thomas Solow (https://community.esri.com/thread/203242-draw-a-rectangle-in-jsapi-4x)
-    let extentGraphic = null;
+    let extentGraphic: __esri.Graphic = null;
     let origin = null;
 
     let handler = this.mapView.on('drag', e => {
       e.stopPropagation();
       if (e.action === 'start'){
-        //this.drawingActive.emit(true);
         if (extentGraphic) this.mapView.graphics.remove(extentGraphic)
         origin = this.mapView.toMap(e);
       } else if (e.action === 'update'){
         //fires continuously during drag
         if (extentGraphic) this.mapView.graphics.remove(extentGraphic)
-        let p = this.mapView.toMap(e); 
+        let p: __esri.Point = this.mapView.toMap(e); 
         extentGraphic = new this.Graphic({
           geometry: new this.Extent({
             xmin: Math.min(p.x, origin.x),
