@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AutogridService } from '../autogrid.service';
 
 @Component({
   selector: 'app-options',
@@ -20,7 +21,7 @@ export class OptionsComponent implements OnInit {
     {value: 'gebco', viewValue: 'GMT_gebco.png'}
   ];
 
-  constructor() { }
+  constructor(private autogridService: AutogridService) { }
 
   ngOnInit() {
   }

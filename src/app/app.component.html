@@ -2,7 +2,7 @@
 
 <app-esri-map (aoi)="aoiHandler($event)" (drawingActive)="drawingActiveHandler($event)"></app-esri-map>
 
-<app-aoi [aoi]="aoi"  (setAoiOnMap)="setAoiOnMapHandler($event)" (activateDraw)="activateDrawHandler()" (resetDraw)="resetDraw()" [drawingActive]="drawingActive"></app-aoi>
+<app-aoi [aoi]="aoi"  (bboxUpdated)="bboxUpdateHandler($event)" (setAoiOnMap)="setAoiOnMapHandler($event)" (activateDraw)="activateDrawHandler()" (resetDraw)="resetDraw()" [drawingActive]="drawingActive"></app-aoi>
 
 <mat-grid-list cols="2" rows="2" rowHeight="200px">
     

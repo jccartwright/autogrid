@@ -145,9 +145,7 @@ export class EsriMapComponent implements OnInit {
       'esri/Graphic',
       'esri/geometry/Extent',
       "esri/geometry/support/webMercatorUtils"
-    ], {
-      url: 'https://js.arcgis.com/4.6/'
-    }).then(([
+    ]).then(([
         Map,
         MapView,
         Graphic,

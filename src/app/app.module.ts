@@ -23,6 +23,7 @@ import { EsriMapComponent } from './esri-map/esri-map.component';
 import { HeaderComponent, InfoDialog } from './header/header.component';
 import { AoiComponent, CoordinateDialog } from './aoi/aoi.component';
 import { OptionsComponent } from './options/options.component';
+import { AutogridService } from './autogrid.service';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,7 @@ import { OptionsComponent } from './options/options.component';
     MatIconModule
   ],
   entryComponents: [ CoordinateDialog, InfoDialog ],
-  providers: [],
+  providers: [AutogridService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

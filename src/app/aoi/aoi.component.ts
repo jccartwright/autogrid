@@ -19,19 +19,29 @@ export class AoiComponent implements OnInit {
   @Output() activateDraw: EventEmitter<null> = new EventEmitter();
   @Output() setAoiOnMap: EventEmitter<any> = new EventEmitter();
   @Output() resetDraw: EventEmitter<null> = new EventEmitter();
+  @Output() bboxUpdated: EventEmitter<any> = new EventEmitter();
   @Input() drawingActive:boolean;
   
   @Input() set aoi(value:any) {
     //value is null until first AOI box is drawn
     if (value) {
-      this.minx = value.xmin.toFixed(3);
-      this.miny = value.ymin.toFixed(3);
-      this.maxx = value.xmax.toFixed(3);
-      this.maxy = value.ymax.toFixed(3);
-      //compute output string here since this is called once and the getter is called frequently
-      this._aoi = `${this.minx}, ${this.miny}, ${this.maxx}, ${this.maxy}`;
+      this.setBbox(value.xmin, value.ymin, value.xmax, value.ymax);
     }
   }
+
+
+  //this is called regardless of whether AOI is updated via map or dialog where 
+  //setAoiOnMap is called only when dialog box closes
+  setBbox(minx, miny, maxx, maxy) {
+    this.minx = minx.toFixed(3);
+    this.miny = miny.toFixed(3);
+    this.maxx = maxx.toFixed(3);
+    this.maxy = maxy.toFixed(3);
+    //compute output string here since this is called once and the getter is called frequently
+    this._aoi = `${this.minx}, ${this.miny}, ${this.maxx}, ${this.maxy}`;
+    this.bboxUpdated.emit({minx: this.minx, miny: this.miny, maxx: this.maxx, maxy: this.maxy});
+  }
+
 
   openDialog(): void {
       let dialogRef = this.dialog.open(CoordinateDialog, {
@@ -43,15 +53,10 @@ export class AoiComponent implements OnInit {
         //result is null when dialog is cancelled
         if (result && result.minx && result.miny && result.maxx && result.maxy) {
           //TODO type values coming back from dialog as string
-          this.minx = parseFloat(result.minx);
-          this.miny = parseFloat(result.miny);
-          this.maxx = parseFloat(result.maxx);
-          this.maxy = parseFloat(result.maxy);
-          this._aoi = `${this.minx}, ${this.miny}, ${this.maxx}, ${this.maxy}`;
+          this.setBbox(parseFloat(result.minx), parseFloat(result.miny), 
+          parseFloat(result.maxx), parseFloat(result.maxy));
           //TODO add box on map corresponding to new coords and zoom to
           this.setAoiOnMap.emit({minx: this.minx, miny: this.miny, maxx: this.maxx, maxy: this.maxy});
-//          this.resetDraw.emit();
-          console.log(result);
         } else {
           console.log("no result. dialog either cancelled or not all values entered");
         }
