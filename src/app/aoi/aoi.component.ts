@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, Inject } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
+import { AutogridService } from '../autogrid.service';
 
 
 @Component({
@@ -9,27 +10,28 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 })
 
 export class AoiComponent implements OnInit {
-  message:string = "select an area of interest...";
+  message = 'select an area of interest...';
   private _aoi = 'no area selected';
   private minx: number;
   private miny: number;
   private maxx: number;
   private maxy: number;
-  
+
   @Output() activateDraw: EventEmitter<null> = new EventEmitter();
   @Output() setAoiOnMap: EventEmitter<any> = new EventEmitter();
   @Output() resetDraw: EventEmitter<null> = new EventEmitter();
   @Output() bboxUpdated: EventEmitter<any> = new EventEmitter();
-  @Input() drawingActive:boolean;
-  
-  @Input() set aoi(value:any) {
-    //value is null until first AOI box is drawn
+  @Input() drawingActive: boolean;
+
+  @Input() set aoi(value: any) {
+    // value is null until first AOI box is drawn
     if (value) {
       this.setBbox(value.xmin, value.ymin, value.xmax, value.ymax);
     }
   }
 
-
+  constructor(public dialog: MatDialog, private autogridService: AutogridService) { }
+  
   //this is called regardless of whether AOI is updated via map or dialog where 
   //setAoiOnMap is called only when dialog box closes
   setBbox(minx, miny, maxx, maxy) {
@@ -74,16 +76,13 @@ export class AoiComponent implements OnInit {
 
   buttonClickHandler() {
     this.activateDraw.emit();
+    this.autogridService.drawRectangle();
   }
 
   //TODO: why is this called constantly?
   get aoi() {
     return(this._aoi);
   }
-
-
-  constructor(public dialog: MatDialog) { }
-
 
   ngOnInit() { }
 

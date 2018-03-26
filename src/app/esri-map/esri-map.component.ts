@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, EventEmitter, Output } from '@angular/core';
+import { AutogridService } from '../autogrid.service';
 
 // also import "esri-loader" methods to be able to load JSAPI modules
 // loadScript is optional if always using the latest JSAPI 4.x version
@@ -12,15 +13,16 @@ import { loadModules } from 'esri-loader';
 export class EsriMapComponent implements OnInit {
   @Output() aoi: EventEmitter<any> = new EventEmitter();
   @Output() drawingActive: EventEmitter<boolean> = new EventEmitter<boolean>();
+  drawRectangleSubscription: any;
 
   // for JSAPI 4.x you can use the 'any' for TS types
   public mapView: __esri.MapView;
-  public fillSymbol: any; //autocast not allow type of __esri.FillSymbol?
+  public fillSymbol: any; // autocast not allow type of __esri.FillSymbol?
   public extentGraphic: __esri.Graphic;
 
   private _drawHandle;
 
-  //make the loaded JSAPI classes available to all methods
+  // make the loaded JSAPI classes available to all methods
   private Graphic;
   private Extent;
   private webMercatorUtils;
@@ -29,6 +31,12 @@ export class EsriMapComponent implements OnInit {
 
   // this is needed to be able to create the MapView at the DOM element in this component
   @ViewChild('mapViewNode') private mapViewEl: ElementRef;
+
+  constructor(private autogridService: AutogridService) {}
+
+  drawRectangle() {
+    console.log('drawing rectangle...');
+  }
 
 
   activateDraw() {
@@ -41,7 +49,7 @@ export class EsriMapComponent implements OnInit {
 
 
   resetDraw() {
-    if (this.extentGraphic) this.mapView.graphics.remove(this.extentGraphic)
+    if (this.extentGraphic) { this.mapView.graphics.remove(this.extentGraphic); }
     this.drawingActive.emit(false);
     if (this._drawHandle) { this._drawHandle.remove(); }
   }
@@ -49,7 +57,7 @@ export class EsriMapComponent implements OnInit {
 
   repositionMap(bbox) {
     this.resetDraw();
-    let extent: __esri.Extent = new this.Extent({
+    const extent: __esri.Extent = new this.Extent({
       xmin: bbox.minx,
       ymin: bbox.miny,
       xmax: bbox.maxx,
@@ -62,16 +70,16 @@ export class EsriMapComponent implements OnInit {
       geometry: extent,
       symbol: this.fillSymbol
     });
-    this.mapView.graphics.add(this.extentGraphic)
+    this.mapView.graphics.add(this.extentGraphic);
 
-    //TODO need to zoom out by 1 level
+    // TODO need to zoom out by 1 level
     this.mapView.goTo(extent);
   }
 
   private _setFillSymbol() {
     // Create a symbol for rendering the graphic
     this.fillSymbol = {
-      type: "simple-fill", // autocasts as new SimpleFillSymbol()
+      type: 'simple-fill', // autocasts as new SimpleFillSymbol()
       color: [227, 139, 79, 0.8],
       outline: { // autocasts as new SimpleLineSymbol()
         color: [255, 255, 255],
@@ -97,19 +105,19 @@ export class EsriMapComponent implements OnInit {
 
 
   private _setDrawHandler() {
-    //Thanks to Thomas Solow (https://community.esri.com/thread/203242-draw-a-rectangle-in-jsapi-4x)
+    // Thanks to Thomas Solow (https://community.esri.com/thread/203242-draw-a-rectangle-in-jsapi-4x)
     let extentGraphic: __esri.Graphic = null;
     let origin = null;
 
-    let handler = this.mapView.on('drag', e => {
+    const handler = this.mapView.on('drag', e => {
       e.stopPropagation();
-      if (e.action === 'start'){
-        if (extentGraphic) this.mapView.graphics.remove(extentGraphic)
+      if (e.action === 'start') {
+        if (extentGraphic) {this.mapView.graphics.remove(extentGraphic); }
         origin = this.mapView.toMap(e);
-      } else if (e.action === 'update'){
-        //fires continuously during drag
-        if (extentGraphic) this.mapView.graphics.remove(extentGraphic)
-        let p: __esri.Point = this.mapView.toMap(e); 
+      } else if (e.action === 'update') {
+        // fires continuously during drag
+        if (extentGraphic) { this.mapView.graphics.remove(extentGraphic); }
+        const p: __esri.Point = this.mapView.toMap(e);
         extentGraphic = new this.Graphic({
           geometry: new this.Extent({
             xmin: Math.min(p.x, origin.x),
@@ -120,31 +128,35 @@ export class EsriMapComponent implements OnInit {
           }),
           symbol: this.fillSymbol
         });
-        this.mapView.graphics.add(extentGraphic)
-      } else if (e.action == 'end') {
+        this.mapView.graphics.add(extentGraphic);
+      } else if (e.action === 'end') {
         this.drawingActive.emit(false);
         this.extentGraphic = extentGraphic;
         this.aoi.emit(this.webMercatorUtils.webMercatorToGeographic(extentGraphic.geometry));
-        //console.log(extentGraphic.geometry.toJSON());
+        // console.log(extentGraphic.geometry.toJSON());
 
-        //remove the handler so map panning will work when not drawing
+        // remove the handler so map panning will work when not drawing
         handler.remove();
-        this._drawHandle = null; 
+        this._drawHandle = null;
       }
     });
     return handler;
   }
-  
 
-  //TODO any concern w/ putting all logic w/in the init lifecycle handler?
+
+  // TODO any concern w/ putting all logic w/in the init lifecycle handler?
   public ngOnInit() {
+    this.drawRectangleSubscription = this.autogridService.drawRequest.subscribe(() => {
+      this.drawRectangle();
+    });
+
     // only load the ArcGIS API for JavaScript when this component is loaded
     return loadModules([
       'esri/Map',
       'esri/views/MapView',
       'esri/Graphic',
       'esri/geometry/Extent',
-      "esri/geometry/support/webMercatorUtils"
+      'esri/geometry/support/webMercatorUtils'
     ], {
       url: 'https://js.arcgis.com/4.6/'
     }).then(([
@@ -159,11 +171,11 @@ export class EsriMapComponent implements OnInit {
         this.webMercatorUtils = webMercatorUtils;
         this.Map = Map;
         this.MapView = MapView;
-        
+
         this._setFillSymbol();
 
         this._constructMap();
-        
+
       });
   }
 
