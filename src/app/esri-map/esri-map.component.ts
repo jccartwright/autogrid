@@ -12,8 +12,9 @@ import { loadModules } from 'esri-loader';
 })
 export class EsriMapComponent implements OnInit {
   @Output() aoi: EventEmitter<any> = new EventEmitter();
-  @Output() drawingActive: EventEmitter<boolean> = new EventEmitter<boolean>();
+
   drawRectangleSubscription: any;
+  resetDrawSubscription: any;
 
   // for JSAPI 4.x you can use the 'any' for TS types
   public mapView: __esri.MapView;
@@ -34,13 +35,7 @@ export class EsriMapComponent implements OnInit {
 
   constructor(private autogridService: AutogridService) {}
 
-  drawRectangle() {
-    console.log('drawing rectangle...');
-  }
-
-
   activateDraw() {
-    this.drawingActive.emit(true);
     if (this.extentGraphic) {
       this.mapView.graphics.remove(this.extentGraphic);
     }
@@ -50,7 +45,6 @@ export class EsriMapComponent implements OnInit {
 
   resetDraw() {
     if (this.extentGraphic) { this.mapView.graphics.remove(this.extentGraphic); }
-    this.drawingActive.emit(false);
     if (this._drawHandle) { this._drawHandle.remove(); }
   }
 
@@ -130,7 +124,7 @@ export class EsriMapComponent implements OnInit {
         });
         this.mapView.graphics.add(extentGraphic);
       } else if (e.action === 'end') {
-        this.drawingActive.emit(false);
+        this.autogridService.drawRectangleComplete(this.webMercatorUtils.webMercatorToGeographic(extentGraphic.geometry));
         this.extentGraphic = extentGraphic;
         this.aoi.emit(this.webMercatorUtils.webMercatorToGeographic(extentGraphic.geometry));
         // console.log(extentGraphic.geometry.toJSON());
@@ -147,7 +141,10 @@ export class EsriMapComponent implements OnInit {
   // TODO any concern w/ putting all logic w/in the init lifecycle handler?
   public ngOnInit() {
     this.drawRectangleSubscription = this.autogridService.drawRequest.subscribe(() => {
-      this.drawRectangle();
+      this.activateDraw();
+    });
+    this.resetDrawSubscription = this.autogridService.resetDrawRequest.subscribe(() => {
+      this.resetDraw();
     });
 
     // only load the ArcGIS API for JavaScript when this component is loaded
@@ -166,6 +163,8 @@ export class EsriMapComponent implements OnInit {
         Extent,
         webMercatorUtils
       ]) => {
+        // make the loaded JSAPI classes available to all methods. facilitates
+        // separating JSAPI functionality out into smaller methods
         this.Graphic = Graphic;
         this.Extent = Extent;
         this.webMercatorUtils = webMercatorUtils;
@@ -175,7 +174,6 @@ export class EsriMapComponent implements OnInit {
         this._setFillSymbol();
 
         this._constructMap();
-
       });
   }
 

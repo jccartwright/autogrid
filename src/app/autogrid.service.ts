@@ -4,9 +4,10 @@ import { Subject } from 'rxjs/Subject';
 @Injectable()
 export class AutogridService {
 
-  panRequest = new Subject<void>();
-  panComplete = new Subject<void>();
   drawRequest = new Subject<void>();
+  drawComplete = new Subject<any>();
+  resetDrawRequest = new Subject<void>();
+
   constructor() { }
 
   // estimate min grid cell size based on AOI and max number of grid cells
@@ -17,5 +18,13 @@ export class AutogridService {
 
   drawRectangle() {
     this.drawRequest.next();
+  }
+
+  resetDraw() {
+    this.resetDrawRequest.next();
+  }
+
+  drawRectangleComplete(aoi) {
+    this.drawComplete.next(aoi);
   }
 }
